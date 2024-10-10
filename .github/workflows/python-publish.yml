@@ -44,10 +44,14 @@ jobs:
       - name: Get Code Analyzer
         run: |
           wget https://github.com/IBM/codenet-minerva-code-analyzer/releases/download/$CODE_ANALYZER_VERSION/codeanalyzer.jar
+          echo "Moving JAR to:" ${{ github.workspace }}/cldk/analysis/java/codeanalyzer/jar/codeanalyzer.jar
           mv codeanalyzer.jar ${{ github.workspace }}/cldk/analysis/java/codeanalyzer/jar/codeanalyzer.jar
+          ls -l ${{ github.workspace }}/cldk/analysis/java/codeanalyzer/jar/
 
       - name: Package project
-        run: poetry build
+        run: |
+          poetry build
+          ls -l dist/
 
       # - name: Publish package distributions to PyPI
       #   run: poetry publish --username $PYPI_USERNAME --password $PYPI_PASSWORD

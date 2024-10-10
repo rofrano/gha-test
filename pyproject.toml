@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "gha-test"
+name = "cldk"
 version = "0.1.0"
 description = "codellm-devkit: A python library for seamless integration with LLMs."
 authors = ["Joe Tester"]
