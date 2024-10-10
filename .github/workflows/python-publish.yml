@@ -1,0 +1,53 @@
+# This workflow will upload a Python Package when a release is created
+
+name: Publish Python Package
+
+on:
+  push:
+    branches:
+      - master
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+env:
+  PYPI_USERNAME: __token__
+  PYPI_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+  CODE_ANALYZER_VERSION: "20240923T182840"
+
+jobs:
+  publish:
+    name: Publishes Python Packages to PyPi
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python - -y
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Install package dependencies
+        run: |
+          poetry config virtualenvs.create false
+          poetry install --sync --no-interaction
+
+      - name: Get Code Analyzer
+        run: |
+          wget https://github.com/IBM/codenet-minerva-code-analyzer/releases/download/$CODE_ANALYZER_VERSION/codeanalyzer.jar
+          mv codeanalyzer.jar ${{ github.workspace }}/cldk/analysis/java/codeanalyzer/jar/codeanalyzer.jar
+
+      - name: Package project
+        run: poetry build
+
+      # - name: Publish package distributions to PyPI
+      #   run: poetry publish --username $PYPI_USERNAME --password $PYPI_PASSWORD
