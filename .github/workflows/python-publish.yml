@@ -51,4 +51,7 @@ jobs:
         run: poetry build
 
       - name: Publish package distributions to PyPI
-        run: poetry publish --username $PYPI_USERNAME --password $PYPI_PASSWORD
+        # run: poetry publish --username $PYPI_USERNAME --password $PYPI_PASSWORD
+        run: |
+          poetry config repositories.testpypi https://test.pypi.org/legacy/
+          poetry publish -r testpypi --username $PYPI_USERNAME --password $PYPI_PASSWORD
