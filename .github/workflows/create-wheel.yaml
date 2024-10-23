@@ -1,0 +1,30 @@
+name: Create Wheel
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-wheel:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.11
+
+    - name: Install dependencies
+      run: pip install wheel twine setuptools
+
+    - name: Build wheel
+      run: python setup.py bdist_wheel
+
+    - name: Upload wheel to release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: dist/*.whl

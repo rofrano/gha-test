@@ -48,3 +48,5 @@ __pycache__/
 
 # Build files
 dist/
+build/
+*.egg-info/
