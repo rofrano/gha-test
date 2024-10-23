@@ -3,9 +3,6 @@
 name: Publish Python Package
 
 on:
-  push:
-    branches:
-      - master
   release:
     types: [published]
 
