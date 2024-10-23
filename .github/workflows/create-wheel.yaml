@@ -8,6 +8,8 @@ on:
 jobs:
   build-wheel:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
     - name: Checkout code
@@ -25,8 +27,9 @@ jobs:
       run: python setup.py bdist_wheel
 
     - name: Upload wheel to release
-      uses: softprops/action-gh-release@v1
+      uses: phuonghuynh/action-ghrelease@v1.1.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
+        name: Release ${{env.RELEASE_TAG}}
         files: dist/*.whl
