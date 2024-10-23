@@ -18,19 +18,17 @@ jobs:
     - name: Set up Python 3.11
       uses: actions/setup-python@v2
       with:
-        python-version: 3.11
+        python-version: "3.11"
 
     - name: Install dependencies
-      run: pip install wheel twine setuptools
+      run: pip install setuptools wheel twine
 
     - name: Build wheel
       run: python setup.py bdist_wheel
 
     - name: Upload wheel to release
       uses: softprops/action-gh-release@v2
-      # env:
-      #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        name: Release ${{env.RELEASE_TAG}}
-        # token: ${{ secrets.GITHUB_TOKEN }}
+        name: Release ${{ github.ref }}
+        generate_release_notes: true
         files: dist/*.whl
